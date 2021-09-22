@@ -8,8 +8,6 @@ import com.ebanxapi.domain.exceptions.NonExistingAccount;
 import com.ebanxapi.domain.strategy.EventCommandStrategy;
 import com.ebanxapi.infra.concrete.InMemoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -24,7 +22,7 @@ public class WithdrawEventCommand implements EventCommandStrategy {
     }
 
     @Override
-    public ResponseEntity<EventResponse> commandEvent(Event event) {
+    public EventResponse commandEvent(Event event) {
         int accountID = Integer.parseInt(event.getOrigin());
         Double newBalance = 0.0;
 
@@ -32,12 +30,11 @@ public class WithdrawEventCommand implements EventCommandStrategy {
             if (repository.queryBalance(accountID) >= event.getAmount()){
                 newBalance = repository.withdraw(accountID, event.getAmount());
                 var origin = new Origin(String.valueOf(accountID),newBalance);
-                var eventResponse= EventResponse
+
+                return EventResponse
                         .builder()
                         .origin(origin)
                         .build();
-
-                return new ResponseEntity<>(eventResponse,HttpStatus.CREATED);
             }
         }else{
             throw new NonExistingAccount();

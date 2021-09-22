@@ -9,6 +9,6 @@ public interface EventCommandStrategy {
 
     boolean canHandle(EventType eventType);
 
-    ResponseEntity<EventResponse> commandEvent(Event event);
+    EventResponse commandEvent(Event event);
 
 }
