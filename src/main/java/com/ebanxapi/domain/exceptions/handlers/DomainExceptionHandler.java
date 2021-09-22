@@ -1,5 +1,6 @@
 package com.ebanxapi.domain.exceptions.handlers;
 
+import com.ebanxapi.domain.exceptions.NonExistingAccount;
 import com.ebanxapi.domain.exceptions.UserBalanceNotFound;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,5 +16,9 @@ public class DomainExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<Double>(0.0, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(NonExistingAccount.class)
+    public ResponseEntity<Double> nonExistingAccountHandler(){
+        return new ResponseEntity<Double>(0.0, HttpStatus.NOT_FOUND);
+    }
 
 }
