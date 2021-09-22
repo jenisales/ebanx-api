@@ -27,9 +27,9 @@ public class EventController {
     }
 
     @PostMapping("/reset")
-    private ResponseEntity<EventResponse> createEvent(){
+    private ResponseEntity<String> createEvent(){
         resetUseCase.reset();
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("OK",HttpStatus.OK);
     }
 
 
