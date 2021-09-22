@@ -25,7 +25,7 @@ public class TransferEventCommand implements EventCommandStrategy {
     }
 
     @Override
-    public ResponseEntity<EventResponse> commandEvent(Event event) {
+    public EventResponse commandEvent(Event event) {
         int destinationID = Integer.parseInt(event.getDestination());
         int originID = Integer.parseInt(event.getOrigin());
 
@@ -35,14 +35,11 @@ public class TransferEventCommand implements EventCommandStrategy {
             var origin = new Origin(String.valueOf(originID), originBalance);
             var destination = new Destination(String.valueOf(destinationID),event.getAmount());
 
-            var eventResponse = EventResponse
+            return EventResponse
                     .builder()
                     .origin(origin)
                     .destination(destination)
                     .build();
-
-            return new ResponseEntity<>(eventResponse, HttpStatus.CREATED);
-
         }else {
             throw new NonExistingAccount();
         }

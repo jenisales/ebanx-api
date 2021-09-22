@@ -8,7 +8,6 @@ import com.ebanxapi.domain.strategy.concrete.TransferEventCommand;
 import com.ebanxapi.domain.strategy.concrete.WithdrawEventCommand;
 import com.ebanxapi.domain.use.cases.CreateEventUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,7 +26,7 @@ public class EventService implements CreateEventUseCase {
 
 
     @Override
-    public ResponseEntity<EventResponse> create(Event event) {
+    public EventResponse create(Event event) {
 
         List<EventCommandStrategy> eventCommands = List.of(withdrawEventCommand,
                 transferEventCommand,

@@ -23,7 +23,8 @@ public class EventController {
 
     @PostMapping("/event")
     private ResponseEntity<EventResponse> createEvent(@RequestBody Event event){
-        return create.create(event);
+        var eventResponse = create.create(event);
+        return new ResponseEntity<>(eventResponse, HttpStatus.CREATED);
     }
 
     @PostMapping("/reset")
