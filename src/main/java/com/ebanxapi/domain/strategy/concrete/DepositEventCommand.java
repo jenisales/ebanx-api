@@ -7,6 +7,8 @@ import com.ebanxapi.domain.entity.event.EventType;
 import com.ebanxapi.domain.strategy.EventCommandStrategy;
 import com.ebanxapi.infra.concrete.InMemoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -21,7 +23,7 @@ public class DepositEventCommand implements EventCommandStrategy {
     }
 
     @Override
-    public EventResponse commandEvent(Event event) {
+    public ResponseEntity<EventResponse> commandEvent(Event event) {
         Destination destination = null;
 
         if (event.getType() == EventType.DEPOSIT){
@@ -35,9 +37,11 @@ public class DepositEventCommand implements EventCommandStrategy {
             destination = new Destination(String.valueOf(accountID), newBalance);
         }
 
-        return EventResponse
+        var eventResponse = EventResponse
                 .builder()
                 .destination(destination)
                 .build();
+
+        return new ResponseEntity<>(eventResponse, HttpStatus.CREATED);
     }
 }

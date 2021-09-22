@@ -9,6 +9,8 @@ import com.ebanxapi.domain.exceptions.NonExistingAccount;
 import com.ebanxapi.domain.strategy.EventCommandStrategy;
 import com.ebanxapi.infra.concrete.InMemoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -23,7 +25,7 @@ public class TransferEventCommand implements EventCommandStrategy {
     }
 
     @Override
-    public EventResponse commandEvent(Event event) {
+    public ResponseEntity<EventResponse> commandEvent(Event event) {
         int destinationID = Integer.parseInt(event.getDestination());
         int originID = Integer.parseInt(event.getOrigin());
 
@@ -33,11 +35,14 @@ public class TransferEventCommand implements EventCommandStrategy {
             var origin = new Origin(String.valueOf(originID), originBalance);
             var destination = new Destination(String.valueOf(destinationID),event.getAmount());
 
-            return EventResponse
+            var eventResponse = EventResponse
                     .builder()
                     .origin(origin)
                     .destination(destination)
                     .build();
+
+            return new ResponseEntity<>(eventResponse, HttpStatus.CREATED);
+
         }else {
             throw new NonExistingAccount();
         }

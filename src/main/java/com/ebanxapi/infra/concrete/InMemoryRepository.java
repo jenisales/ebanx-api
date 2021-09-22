@@ -1,6 +1,7 @@
 package com.ebanxapi.infra.concrete;
 
 import com.ebanxapi.domain.exceptions.UserBalanceNotFound;
+import com.ebanxapi.domain.use.cases.ResetUseCase;
 import com.ebanxapi.infra.contract.*;
 import org.springframework.stereotype.Repository;
 
@@ -8,9 +9,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Repository
-public class InMemoryRepository implements UserBalanceQuery, UserAccountQuery, CreateAccountCommand, UserDepositCommand, UserWithDrawCommand {
+public class InMemoryRepository implements ResetUseCase,UserBalanceQuery, UserAccountQuery, CreateAccountCommand, UserDepositCommand, UserWithDrawCommand {
 
-    private final Map<Integer, Double> usersBalance = new HashMap<>();
+    private Map<Integer, Double> usersBalance = new HashMap<>();
+
+
+    public void reset(){
+        this.usersBalance = new HashMap<>();
+    }
 
     @Override
     public Double queryBalance(Integer accountID) {
